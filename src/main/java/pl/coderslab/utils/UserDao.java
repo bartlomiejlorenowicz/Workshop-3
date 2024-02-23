@@ -21,6 +21,8 @@ public class UserDao {
 
     private static final String READ_USER_QUERY = "SELECT * FROM users WHERE id = ?";
 
+    private static final String DELETE_USER_QUERY = "DELETE FROM users WHERE id = ?";
+
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
         try (Connection connection = DbUtil.getConnection();
@@ -97,5 +99,16 @@ public class UserDao {
             e.printStackTrace();
         }
         return user;
+    }
+
+    public void delete(int userId) {
+        try (Connection connection = DbUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_USER_QUERY)) {
+            statement.setInt(1, userId);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
